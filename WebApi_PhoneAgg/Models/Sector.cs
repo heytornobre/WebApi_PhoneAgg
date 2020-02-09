@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using WebApi_PhoneAgg.Converter;
 
 namespace WebApi_PhoneAgg.Models
 {
-
+    [JsonConverter(typeof(SectorConverter))]
     public class Sector
     {
-        private Sector(string name) { Name = name; }
+        public Sector(string key, int v)
+        {
+            Name = key;
+            Count = v;
+        }
 
         public string Name { get; set; }
-
-        public static Sector Technology { get { return new Sector("Technology"); } }
-        public static Sector Banking { get { return new Sector("Banking"); } }
-        public static Sector Clothing { get { return new Sector("Clothing"); } }
+        public int Count { get; set; }
     }
 }

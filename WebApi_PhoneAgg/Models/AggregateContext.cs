@@ -20,7 +20,7 @@ namespace WebApi_PhoneAgg.Models
             {
                 var temp = PhoneNumbers.Where(t => t.Prefix == prefix)
                             .Select(s=> s.Sector).GroupBy(g=>g)
-                            .Select(x=> new KeyValuePair<string,int>(x.Key, x.Count()));
+                            .Select(x=> new Sector(x.Key, x.Count()));
                 response.Prefixes.Add(new Prefix { Number = int.Parse(prefix), Sectors = temp.ToList() }); 
             }
 

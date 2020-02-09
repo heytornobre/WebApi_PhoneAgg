@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_PhoneAgg.Models;
 using WebApi_PhoneAgg.FileReader;
-using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,7 +31,7 @@ namespace WebApi_PhoneAgg.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<PhoneNumber>>> PostAggregateItem([FromBody] string[] items)
+        public async Task<IActionResult> PostAggregateItem([FromBody] string[] items)
         {
             _context.PhoneNumbers.RemoveRange(_context.PhoneNumbers);
             _context.SaveChanges();
@@ -45,9 +48,17 @@ namespace WebApi_PhoneAgg.Controllers
                 }
             }
 
-            object response = _context.Aggregate();
-            return Ok(_context.Aggregate());
+            return GetResponseString(_context.Aggregate());
+
+            //return _context.Aggregate();
         }
 
+        public IActionResult GetResponseString(Response response)
+        {
+            var jsonString = "";
+
+            jsonString = JsonConvert.SerializeObject(response.Prefixes);
+            return Content(jsonString);
+        }
     }
 }
