@@ -22,7 +22,7 @@ namespace WebApi_PhoneAgg
         {
 
             services.AddDbContext<AggregateContext>(opt =>
-                opt.UseInMemoryDatabase("TodoList"));
+                opt.UseInMemoryDatabase("AggregateList"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -38,7 +38,6 @@ namespace WebApi_PhoneAgg
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

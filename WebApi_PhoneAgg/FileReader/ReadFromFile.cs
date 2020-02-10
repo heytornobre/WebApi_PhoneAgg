@@ -1,4 +1,7 @@
-﻿namespace WebApi_PhoneAgg.FileReader
+﻿using System;
+using System.IO;
+
+namespace WebApi_PhoneAgg.FileReader
 {
     class ReadFromFile
     {
@@ -6,11 +9,10 @@
 
         public static void Read()
         {
-            string text = System.IO.File.ReadAllText(@"FileReader/prefixes.txt");
-
+            string txtPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.ToString(), "FileReader/prefixes.txt");
             // Read each line of the file into a string array. Each element
             // of the array is one line of the file.
-            Prefixes = System.IO.File.ReadAllLines(@"FileReader/prefixes.txt");
+            Prefixes = System.IO.File.ReadAllLines(@txtPath);
         }
     }
 }

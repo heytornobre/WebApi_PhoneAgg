@@ -22,13 +22,6 @@ namespace WebApi_PhoneAgg.Controllers
 
         public AggregateController(AggregateContext context) => _context = context;
         
-        // GET: api/aggregate
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PhoneNumber>>> GetAggregateItems()
-        {
-            return await _context.PhoneNumbers.ToListAsync();
-        }
-
         // POST api/<controller>
         [HttpPost]
         public async Task<IActionResult> PostAggregateItem([FromBody] string[] items)

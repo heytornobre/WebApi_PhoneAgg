@@ -1,0 +1,12 @@
+﻿version: '3'
+
+services:
+  web:
+    image: webapi_phoneagg
+    ports: 
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
