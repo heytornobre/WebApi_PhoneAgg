@@ -7,7 +7,7 @@ namespace WebApi_PhoneAgg.Models
     [JsonConverter(typeof(PrefixConverter))]
     public class Prefix
     {
-        public int Number { get; set; }
-        public List<Sector> Sectors{get; set;}
+        public string Number { get; set; }
+        public Sector Sectors { get; set; }
     }
 }

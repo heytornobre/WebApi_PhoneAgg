@@ -53,12 +53,10 @@ namespace WebApi_PhoneAgg.Controllers
             //return _context.Aggregate();
         }
 
-        public IActionResult GetResponseString(Response response)
+        public IActionResult GetResponseString(dynamic response)
         {
-            var jsonString = "";
-
-            jsonString = JsonConvert.SerializeObject(response.Prefixes);
-            return Content(jsonString);
+            var jsonString = JsonConvert.SerializeObject(response, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore});
+            return Content(jsonString,"application/json");
         }
     }
 }

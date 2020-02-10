@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using WebApi_PhoneAgg.Models;
 
 namespace WebApi_PhoneAgg.Converter
@@ -21,21 +23,19 @@ namespace WebApi_PhoneAgg.Converter
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var objectType = value.GetType();
-            var contract = serializer.ContractResolver.ResolveContract(objectType) as JsonObjectContract;
-            if (contract == null)
-                throw new JsonSerializationException(string.Format("invalid type {0}.", objectType.FullName));
+            Type type = value.GetType();
+            Prefix obj = value as Prefix;
 
-            writer.WriteStartArray();
-            foreach (var property in SerializableProperties(contract))
+            var bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+            string dataPropertyName = (string)type.GetProperty("Number", bindingFlags).GetValue(value);
+            if (string.IsNullOrEmpty(dataPropertyName))
             {
-                var propertyValue = property.ValueProvider.GetValue(value);
-                if (property.Converter != null && property.Converter.CanWrite)
-                    property.Converter.WriteJson(writer, propertyValue, serializer);
-                else
-                    serializer.Serialize(writer, propertyValue);
+                dataPropertyName = "Data";
             }
-            writer.WriteEndArray();
+
+            JObject jo = new JObject();
+            jo.Add(dataPropertyName, JToken.FromObject(obj.Sectors));
+            jo.WriteTo(writer);
         }
 
         static IEnumerable<JsonProperty> SerializableProperties(JsonObjectContract contract)
